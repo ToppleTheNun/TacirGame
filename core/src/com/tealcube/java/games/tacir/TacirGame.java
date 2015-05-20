@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tealcube.java.games.tacir.components.SizeComponent;
@@ -32,8 +33,8 @@ public class TacirGame extends ApplicationAdapter {
     // have an ID that is NOT equal to 0
     public static final long INVALID_ENTITY_ID = 0L;
 
-    private static final int WORLD_WIDTH = 480;
-    private static final int WORLD_HEIGHT = 320;
+    private static final int WORLD_WIDTH = 800;
+    private static final int WORLD_HEIGHT = 450;
 
     // Entity/Component System engine, tracks all entities
     private PooledEngine engine;
@@ -54,7 +55,7 @@ public class TacirGame extends ApplicationAdapter {
 
         // setup camera here
         camera = new OrthographicCamera();
-        viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
+        viewport = new FillViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         viewport.getCamera().position.set(viewport.getCamera().position.x + WORLD_WIDTH * 0.5f,
                                           viewport.getCamera().position.y + WORLD_HEIGHT * 0.5f,
                                           0);
