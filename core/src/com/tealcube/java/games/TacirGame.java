@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tealcube.java.games.components.SizeComponent;
 import com.tealcube.java.games.components.TextureComponent;
 import com.tealcube.java.games.components.TransformComponent;
+import com.tealcube.java.games.components.VelocityComponent;
 import com.tealcube.java.games.systems.MovementSystem;
 import com.tealcube.java.games.systems.RenderSystem;
 
@@ -72,16 +73,19 @@ public class TacirGame extends ApplicationAdapter {
         TextureComponent textureComponent = new TextureComponent();
         SizeComponent sizeComponent = new SizeComponent();
         TransformComponent transformComponent = new TransformComponent();
+        VelocityComponent velocityComponent = new VelocityComponent();
 
         textureComponent.setTextureRegion(new TextureRegion(new Texture(Gdx.files.internal("dickbutt.png"))));
         sizeComponent.setWidth(64);
         sizeComponent.setHeight(64);
         transformComponent.setPosition(new Vector2(WORLD_WIDTH / 2 - sizeComponent.getWidth() / 2,
                                                    WORLD_HEIGHT / 2 - sizeComponent.getHeight() / 2));
+        velocityComponent.setVelocity(new Vector2(0.0f, 5f));
 
         dickbutt.add(textureComponent);
         dickbutt.add(sizeComponent);
         dickbutt.add(transformComponent);
+        dickbutt.add(velocityComponent);
 
         engine.addEntity(dickbutt);
         renderSystem.addedToEngine(engine);
@@ -89,7 +93,7 @@ public class TacirGame extends ApplicationAdapter {
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         engine.update(Gdx.graphics.getDeltaTime());
