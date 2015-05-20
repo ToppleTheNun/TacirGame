@@ -3,10 +3,11 @@ package com.tealcube.java.games.systems;
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
 
 import java.util.Comparator;
 
-public abstract class SortedEntitySystem extends EntitySystem implements EntityListener {
+public abstract class SortedEntitySystem extends EntitySystem implements EntityListener, Disposable {
 
     private Family family;
     private Array<Entity> sortedEntities;
@@ -96,6 +97,11 @@ public abstract class SortedEntitySystem extends EntitySystem implements EntityL
 
     public Family getFamily() {
         return family;
+    }
+
+    @Override
+    public void dispose() {
+        // do nothing by default
     }
 
     protected abstract void processEntity (Entity entity, float deltaTime);
