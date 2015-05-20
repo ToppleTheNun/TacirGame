@@ -8,6 +8,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tealcube.java.games.Mappers;
+import com.tealcube.java.games.TacirGame;
 import com.tealcube.java.games.components.SizeComponent;
 import com.tealcube.java.games.components.TextureComponent;
 import com.tealcube.java.games.components.TransformComponent;
@@ -38,6 +39,9 @@ public class RenderSystem extends EntitySystem {
         batch.setProjectionMatrix(camera.combined);
 
         for (Entity e : entities) {
+            if (e.getId() == TacirGame.INVALID_ENTITY_ID) {
+                continue;
+            }
             TransformComponent transformComponent = Mappers.getInstance().getTransformMapper().get(e);
             TextureComponent textureComponent = Mappers.getInstance().getTextureMapper().get(e);
             SizeComponent sizeComponent = Mappers.getInstance().getSizeMapper().get(e);
