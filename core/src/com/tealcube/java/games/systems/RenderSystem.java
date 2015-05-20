@@ -54,6 +54,12 @@ public class RenderSystem extends SortedEntitySystem {
                    transformComponent.getRotation());
     }
 
+    @Override
+    public void dispose() {
+        batch.flush();
+        batch.dispose();
+    }
+
     private static class ZComparator implements Comparator<Entity> {
         @Override
         public int compare(Entity a, Entity b) {
