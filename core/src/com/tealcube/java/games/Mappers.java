@@ -1,7 +1,7 @@
 package com.tealcube.java.games;
 
 import com.badlogic.ashley.core.ComponentMapper;
-import com.tealcube.java.games.components.PositionComponent;
+import com.tealcube.java.games.components.TransformComponent;
 import com.tealcube.java.games.components.TextureComponent;
 import com.tealcube.java.games.components.VelocityComponent;
 
@@ -21,20 +21,20 @@ public final class Mappers {
 
     // ComponentMappers allow us to retrieve the components from entities MUCH faster than
     // using the entity's instance method for retrieving components
-    private final ComponentMapper<PositionComponent> positionMapper;
+    private final ComponentMapper<TransformComponent> transformMapper;
     private final ComponentMapper<VelocityComponent> velocityMapper;
     private final ComponentMapper<TextureComponent> textureMapper;
 
     // create a private constructor so that only this class is able to
     // construct a copy of itself
     private Mappers() {
-        positionMapper = ComponentMapper.getFor(PositionComponent.class);
+        transformMapper = ComponentMapper.getFor(TransformComponent.class);
         velocityMapper = ComponentMapper.getFor(VelocityComponent.class);
         textureMapper = ComponentMapper.getFor(TextureComponent.class);
     }
 
-    public ComponentMapper<PositionComponent> getPositionMapper() {
-        return positionMapper;
+    public ComponentMapper<TransformComponent> getTransformMapper() {
+        return transformMapper;
     }
 
     public ComponentMapper<VelocityComponent> getVelocityMapper() {
