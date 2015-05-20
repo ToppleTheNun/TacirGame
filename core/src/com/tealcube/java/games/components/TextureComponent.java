@@ -1,31 +1,31 @@
 package com.tealcube.java.games.components;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Pool.Poolable;
 
 public class TextureComponent extends Component implements Poolable {
 
-    private Texture texture = null;
+    private TextureRegion textureRegion = null;
 
     @Override
     public void reset() {
-        if (hasTexture()) {
-            texture.dispose();
+        if (hasTextureRegion()) {
+            textureRegion.getTexture().dispose();
         }
-        texture = null;
+        textureRegion = null;
     }
 
-    public boolean hasTexture() {
-        return texture != null;
+    public boolean hasTextureRegion() {
+        return textureRegion != null;
     }
 
-    public Texture getTexture() {
-        return texture;
+    public TextureRegion getTextureRegion() {
+        return textureRegion;
     }
 
-    public void setTexture(Texture texture) {
-        this.texture = texture;
+    public void setTextureRegion(TextureRegion textureRegion) {
+        this.textureRegion = textureRegion;
     }
 
 }
