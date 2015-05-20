@@ -1,34 +1,23 @@
 package com.tealcube.java.games.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool.Poolable;
 
 public class VelocityComponent extends Component implements Poolable {
 
-    // float velocities allow us to control the speed of the objects
-    // in a much more precise way than ints allow us to do
-    private float x = 0.0f;
-    private float y = 0.0f;
+    private Vector2 velocity = Vector2.Zero;
 
     @Override
     public void reset() {
-        x = 0.0f;
-        y = 0.0f;
+        velocity = Vector2.Zero;
     }
 
-    public float getX() {
-        return x;
+    public Vector2 getVelocity() {
+        return velocity;
     }
 
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public void setY(float y) {
-        this.y = y;
+    public void setVelocity(Vector2 velocity) {
+        this.velocity = velocity;
     }
 }
