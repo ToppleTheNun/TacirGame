@@ -10,11 +10,13 @@ public class PositionComponent extends Component implements Poolable {
     // our movement code will work
     private float x = 0.0f;
     private float y = 0.0f;
+    private float z = 0.0f;
 
     @Override
     public void reset() {
         x = 0.0f;
         y = 0.0f;
+        z = 0.0f;
     }
 
     public float getX() {
@@ -33,4 +35,11 @@ public class PositionComponent extends Component implements Poolable {
         this.y = y;
     }
 
+    public float getZ() {
+        return z;
+    }
+
+    public void setZ(float z) {
+        this.z = z;
+    }
 }
