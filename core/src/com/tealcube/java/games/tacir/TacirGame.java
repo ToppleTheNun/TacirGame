@@ -101,6 +101,7 @@ public class TacirGame extends ApplicationAdapter {
 
     @Override
     public void dispose() {
+        engine.clearPools();
         engine.removeSystem(renderSystem);
         renderSystem.dispose();
         engine.removeSystem(movementSystem);
