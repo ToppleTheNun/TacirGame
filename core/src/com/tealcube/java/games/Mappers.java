@@ -2,6 +2,7 @@ package com.tealcube.java.games;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.tealcube.java.games.components.PositionComponent;
+import com.tealcube.java.games.components.TextureComponent;
 import com.tealcube.java.games.components.VelocityComponent;
 
 public final class Mappers {
@@ -22,12 +23,14 @@ public final class Mappers {
     // using the entity's instance method for retrieving components
     private final ComponentMapper<PositionComponent> positionMapper;
     private final ComponentMapper<VelocityComponent> velocityMapper;
+    private final ComponentMapper<TextureComponent> textureMapper;
 
     // create a private constructor so that only this class is able to
     // construct a copy of itself
     private Mappers() {
         positionMapper = ComponentMapper.getFor(PositionComponent.class);
         velocityMapper = ComponentMapper.getFor(VelocityComponent.class);
+        textureMapper = ComponentMapper.getFor(TextureComponent.class);
     }
 
     public ComponentMapper<PositionComponent> getPositionMapper() {
@@ -36,5 +39,9 @@ public final class Mappers {
 
     public ComponentMapper<VelocityComponent> getVelocityMapper() {
         return velocityMapper;
+    }
+
+    public ComponentMapper<TextureComponent> getTextureMapper() {
+        return textureMapper;
     }
 }
