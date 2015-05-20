@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tealcube.java.games.components.SizeComponent;
@@ -78,9 +78,9 @@ public class TacirGame extends ApplicationAdapter {
         textureComponent.setTextureRegion(new TextureRegion(new Texture(Gdx.files.internal("dickbutt.png"))));
         sizeComponent.setWidth(64);
         sizeComponent.setHeight(64);
-        transformComponent.setPosition(new Vector2(WORLD_WIDTH / 2 - sizeComponent.getWidth() / 2,
-                                                   WORLD_HEIGHT / 2 - sizeComponent.getHeight() / 2));
-        velocityComponent.setVelocity(new Vector2(0.0f, 5f));
+        transformComponent.setPosition(new Vector3(WORLD_WIDTH / 2 - sizeComponent.getWidth() / 2,
+                                                   WORLD_HEIGHT / 2 - sizeComponent.getHeight() / 2, 0));
+        velocityComponent.setVelocity(new Vector3(0.0f, 5f, 0.0f));
 
         dickbutt.add(textureComponent);
         dickbutt.add(sizeComponent);
