@@ -4,7 +4,11 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tealcube.java.games.systems.MovementSystem;
+import com.tealcube.java.games.systems.RenderSystem;
 
 public class TacirGame extends ApplicationAdapter {
 
@@ -19,11 +23,19 @@ public class TacirGame extends ApplicationAdapter {
     // have an ID that is NOT equal to 0
     public static final long INVALID_ENTITY_ID = 0L;
 
+    private static final int WORLD_WIDTH = 480;
+    private static final int WORLD_HEIGHT = 320;
+
     // Entity/Component System engine, tracks all entities
     private PooledEngine engine;
 
     // EntitySystems that want to be tracked
     private MovementSystem movementSystem;
+    private RenderSystem renderSystem;
+
+    // Camera and Viewport
+    private OrthographicCamera camera;
+    private Viewport viewport;
 
     @Override
     public void create() {
@@ -31,9 +43,22 @@ public class TacirGame extends ApplicationAdapter {
         engine = new PooledEngine(ENTITY_POOL_INITIAL_SIZE, ENTITY_POOL_MAX_SIZE, COMPONENT_POOL_INITIAL_SIZE,
                                   COMPONENT_POOL_MAX_SIZE);
 
+        // setup camera here
+        camera = new OrthographicCamera();
+        viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
+        viewport.getCamera().position.set(viewport.getCamera().position.x + WORLD_WIDTH * 0.5f,
+                                          viewport.getCamera().position.y + WORLD_HEIGHT * 0.5f,
+                                          0);
+        viewport.getCamera().update();
+        viewport.update(WORLD_WIDTH, WORLD_HEIGHT);
+        camera.update();
+
         // register the Movement system
         movementSystem = new MovementSystem();
         engine.addSystem(movementSystem);
+        // register the Render system
+        renderSystem = new RenderSystem(camera);
+        engine.addSystem(renderSystem);
     }
 
     @Override
@@ -47,11 +72,20 @@ public class TacirGame extends ApplicationAdapter {
 
     @Override
     public void dispose() {
+        engine.removeSystem(renderSystem);
         engine.removeSystem(movementSystem);
     }
 
     public PooledEngine getEngine() {
         return engine;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    public Viewport getViewport() {
+        return viewport;
     }
 
 }
