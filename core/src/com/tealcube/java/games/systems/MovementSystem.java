@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.tealcube.java.games.Mappers;
 import com.tealcube.java.games.TacirGame;
 import com.tealcube.java.games.components.TransformComponent;
@@ -29,9 +30,10 @@ public class MovementSystem extends IteratingSystem {
 
         Vector2 velocity = velocityComponent.getVelocity();
 
-        Vector2 oldPosition = positionComponent.getPosition();
-        Vector2 newPosition = new Vector2(oldPosition.x + velocity.x * deltaTime,
-                                          oldPosition.y + velocity.y * deltaTime);
+        Vector3 oldPosition = positionComponent.getPosition();
+        Vector3 newPosition = new Vector3(oldPosition.x + velocity.x * deltaTime,
+                                          oldPosition.y + velocity.y * deltaTime,
+                                          oldPosition.z);
         positionComponent.setPosition(newPosition);
     }
 
