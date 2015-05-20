@@ -1,12 +1,19 @@
 package com.tealcube.java.games;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.tealcube.java.games.components.SizeComponent;
+import com.tealcube.java.games.components.TextureComponent;
+import com.tealcube.java.games.components.TransformComponent;
 import com.tealcube.java.games.systems.MovementSystem;
 import com.tealcube.java.games.systems.RenderSystem;
 
@@ -59,6 +66,25 @@ public class TacirGame extends ApplicationAdapter {
         // register the Render system
         renderSystem = new RenderSystem(camera);
         engine.addSystem(renderSystem);
+
+        // create dickbutt in order to test systems
+        Entity dickbutt = engine.createEntity();
+        TextureComponent textureComponent = new TextureComponent();
+        SizeComponent sizeComponent = new SizeComponent();
+        TransformComponent transformComponent = new TransformComponent();
+
+        textureComponent.setTextureRegion(new TextureRegion(new Texture(Gdx.files.internal("dickbutt.png"))));
+        sizeComponent.setWidth(64);
+        sizeComponent.setHeight(64);
+        transformComponent.setPosition(new Vector2(WORLD_WIDTH / 2 - sizeComponent.getWidth() / 2,
+                                                   WORLD_HEIGHT / 2 - sizeComponent.getHeight() / 2));
+
+        dickbutt.add(textureComponent);
+        dickbutt.add(sizeComponent);
+        dickbutt.add(transformComponent);
+
+        engine.addEntity(dickbutt);
+        renderSystem.addedToEngine(engine);
     }
 
     @Override
