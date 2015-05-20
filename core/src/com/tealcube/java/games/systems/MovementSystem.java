@@ -3,6 +3,7 @@ package com.tealcube.java.games.systems;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.math.Vector2;
 import com.tealcube.java.games.Mappers;
 import com.tealcube.java.games.TacirGame;
 import com.tealcube.java.games.components.TransformComponent;
@@ -23,11 +24,15 @@ public class MovementSystem extends IteratingSystem {
 
         // below is faster than "entity.getComponent(TransformComponent.class)" or whatever
         // the entity equivalent is, but the source code is dumb
-        TransformComponent position = Mappers.getInstance().getTransformMapper().get(entity);
-        VelocityComponent velocity = Mappers.getInstance().getVelocityMapper().get(entity);
+        TransformComponent positionComponent = Mappers.getInstance().getTransformMapper().get(entity);
+        VelocityComponent velocityComponent = Mappers.getInstance().getVelocityMapper().get(entity);
 
-        position.setX(position.getX() + velocity.getX() * deltaTime);
-        position.setY(position.getY() + velocity.getY() * deltaTime);
+        Vector2 velocity = velocityComponent.getVelocity();
+
+        Vector2 oldPosition = positionComponent.getPosition();
+        Vector2 newPosition = new Vector2(oldPosition.x + velocity.x * deltaTime,
+                                          oldPosition.y + velocity.y * deltaTime);
+        positionComponent.setPosition(newPosition);
     }
 
 }
