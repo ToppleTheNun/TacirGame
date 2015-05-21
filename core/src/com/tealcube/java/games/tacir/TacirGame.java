@@ -84,7 +84,7 @@ public class TacirGame extends ApplicationAdapter {
         movementSystem = new MovementSystem();
         engine.addSystem(movementSystem);
         // register the Render system
-        renderSystem = new RenderSystem(camera);
+        renderSystem = new RenderSystem(this, camera);
         engine.addSystem(renderSystem);
 
         // create our Random with the current time as the seed
