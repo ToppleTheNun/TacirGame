@@ -8,6 +8,25 @@ import java.util.*;
 
 public class EventManager {
 
+    public void callEvent(Event event) {
+        synchronized (this) {
+            fireEvent(event);
+        }
+    }
+
+    private void fireEvent(Event event) {
+        HandlerList handlers = event.getHandlers();
+        RegisteredListener[] listeners = handlers.getRegisteredListeners();
+
+        for (RegisteredListener registration : listeners) {
+            try {
+                registration.callEvent(event);
+            } catch (Throwable ex) {
+                Gdx.app.log("[DEBUG]", "Unable to fire event " + event.getName());
+            }
+        }
+    }
+
     public void registerEvents(Listener listener) {
         for (Map.Entry<Class<? extends Event>, Set<RegisteredListener>> entry : createRegisteredListeners(listener).entrySet()) {
             try {
