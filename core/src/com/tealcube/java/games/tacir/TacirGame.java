@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.tealcube.java.games.common.events.EventManager;
 import com.tealcube.java.games.tacir.components.SizeComponent;
 import com.tealcube.java.games.tacir.components.TextureComponent;
 import com.tealcube.java.games.tacir.components.TransformComponent;
@@ -51,6 +52,9 @@ public class TacirGame extends ApplicationAdapter {
     // Random
     private Random random;
 
+    // EventManager
+    private EventManager eventManager;
+
     @Override
     public void create() {
         // initialize the ECS engine
@@ -76,6 +80,8 @@ public class TacirGame extends ApplicationAdapter {
 
         // create our Random with the current time as the seed
         random = new Random(System.currentTimeMillis());
+
+        eventManager = new EventManager();
 
         // create dickbutts in order to test systems
         for (int i = 0; i < 10; i++) {
@@ -140,5 +146,9 @@ public class TacirGame extends ApplicationAdapter {
 
     public Random getRandom() {
         return random;
+    }
+
+    public EventManager getEventManager() {
+        return eventManager;
     }
 }
