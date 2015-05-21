@@ -64,7 +64,7 @@ public class RenderSystem extends SortedEntitySystem {
         TextureComponent textureComponent = Mappers.getInstance().getTextureMapper().get(e);
         SizeComponent sizeComponent = Mappers.getInstance().getSizeMapper().get(e);
 
-        batch.draw(textureComponent.getTextureRegion(), transformComponent.getPosition().x,
+        batch.draw(textureComponent.getTexture(), transformComponent.getPosition().x,
                    transformComponent.getPosition().y, sizeComponent.getWidth() * 0.5f,
                    sizeComponent.getHeight() * 0.5f, sizeComponent.getWidth(), sizeComponent.getHeight(),
                    transformComponent.getScale().x, transformComponent.getScale().y,
