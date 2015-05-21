@@ -10,17 +10,20 @@ import com.tealcube.java.games.tacir.TacirGame;
 import com.tealcube.java.games.tacir.components.SizeComponent;
 import com.tealcube.java.games.tacir.components.TextureComponent;
 import com.tealcube.java.games.tacir.components.TransformComponent;
+import com.tealcube.java.games.tacir.events.EntityRenderEvent;
 
 import java.util.Comparator;
 
 public class RenderSystem extends SortedEntitySystem {
 
+    private final TacirGame game;
     private SpriteBatch batch;
     private OrthographicCamera camera;
 
-    public RenderSystem(OrthographicCamera camera) {
+    public RenderSystem(TacirGame game, OrthographicCamera camera) {
         super(Family.all(SizeComponent.class, TextureComponent.class, TransformComponent.class).get(),
               new ZComparator());
+        this.game = game;
         this.batch = new SpriteBatch();
         this.camera = camera;
     }
@@ -43,6 +46,14 @@ public class RenderSystem extends SortedEntitySystem {
         if (e.getId() == TacirGame.INVALID_ENTITY_ID) {
             return;
         }
+
+        EntityRenderEvent entityRenderEvent = new EntityRenderEvent(e);
+        game.getEventManager().callEvent(entityRenderEvent);
+
+        if (entityRenderEvent.isCancelled()) {
+            return;
+        }
+
         TransformComponent transformComponent = Mappers.getInstance().getTransformMapper().get(e);
         TextureComponent textureComponent = Mappers.getInstance().getTextureMapper().get(e);
         SizeComponent sizeComponent = Mappers.getInstance().getSizeMapper().get(e);
