@@ -1,6 +1,6 @@
 package com.tealcube.java.games.tacir.events;
 
-import com.tealcube.java.games.common.events.Cancellable;
+import com.tealcube.games.java.common.events.Cancellable;
 
 public class TacirCancellableEvent extends TacirEvent implements Cancellable {
 

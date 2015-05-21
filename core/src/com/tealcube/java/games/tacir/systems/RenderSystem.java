@@ -3,8 +3,10 @@ package com.tealcube.java.games.tacir.systems;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.tealcube.games.java.common.events.EventException;
 import com.tealcube.java.games.tacir.Mappers;
 import com.tealcube.java.games.tacir.TacirGame;
 import com.tealcube.java.games.tacir.components.SizeComponent;
@@ -48,7 +50,11 @@ public class RenderSystem extends SortedEntitySystem {
         }
 
         EntityRenderEvent entityRenderEvent = new EntityRenderEvent(e);
-        game.getEventManager().callEvent(entityRenderEvent);
+        try {
+            game.getEventManager().callEvent(entityRenderEvent);
+        } catch (EventException e1) {
+            Gdx.app.log("[DEBUG]", "Could not call EntityRenderEvent for entity " + e.getId());
+        }
 
         if (entityRenderEvent.isCancelled()) {
             return;

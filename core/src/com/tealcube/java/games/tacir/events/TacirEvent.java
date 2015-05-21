@@ -1,7 +1,7 @@
 package com.tealcube.java.games.tacir.events;
 
-import com.tealcube.java.games.common.events.Event;
-import com.tealcube.java.games.common.events.HandlerList;
+import com.tealcube.games.java.common.events.Event;
+import com.tealcube.games.java.common.events.HandlerList;
 
 public class TacirEvent extends Event {
 

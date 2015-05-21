@@ -11,9 +11,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.tealcube.java.games.common.events.EventHandler;
-import com.tealcube.java.games.common.events.EventManager;
-import com.tealcube.java.games.common.events.Listener;
+import com.tealcube.games.java.common.events.EventHandler;
+import com.tealcube.games.java.common.events.EventManager;
+import com.tealcube.games.java.common.events.Listener;
 import com.tealcube.java.games.tacir.components.SizeComponent;
 import com.tealcube.java.games.tacir.components.TextureComponent;
 import com.tealcube.java.games.tacir.components.TransformComponent;
@@ -94,14 +94,18 @@ public class TacirGame extends ApplicationAdapter {
         random = new Random(System.currentTimeMillis());
 
         eventManager = new EventManager();
-        eventManager.registerEvents(new Listener() {
-            @EventHandler
-            public void onEntityRender(EntityRenderEvent event) {
-                TransformComponent transformComponent = Mappers.getInstance().getTransformMapper().get(
-                        event.getEntity());
-                transformComponent.setRotation(transformComponent.getRotation() + 0.1f);
-            }
-        });
+        try {
+            eventManager.registerEvents(new Listener() {
+                @EventHandler
+                public void onEntityRender(EntityRenderEvent event) {
+                    TransformComponent transformComponent = Mappers.getInstance().getTransformMapper().get(
+                            event.getEntity());
+                    transformComponent.setRotation(transformComponent.getRotation() + 0.1f);
+                }
+            });
+        } catch (IllegalAccessException e) {
+            Gdx.app.log("[DEBUG]", "Unable to register events");
+        }
 
         // create dickbutts in order to test systems
         for (int i = 0; i < 10; i++) {
