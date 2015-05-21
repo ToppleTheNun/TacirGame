@@ -15,9 +15,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tealcube.java.games.tacir.components.SizeComponent;
 import com.tealcube.java.games.tacir.components.TextureComponent;
 import com.tealcube.java.games.tacir.components.TransformComponent;
-import com.tealcube.java.games.tacir.components.VelocityComponent;
 import com.tealcube.java.games.tacir.systems.MovementSystem;
 import com.tealcube.java.games.tacir.systems.RenderSystem;
+
+import java.util.Random;
 
 public class TacirGame extends ApplicationAdapter {
 
@@ -47,6 +48,9 @@ public class TacirGame extends ApplicationAdapter {
     private OrthographicCamera camera;
     private Viewport viewport;
 
+    // Random
+    private Random random;
+
     @Override
     public void create() {
         // initialize the ECS engine
@@ -70,27 +74,33 @@ public class TacirGame extends ApplicationAdapter {
         renderSystem = new RenderSystem(camera);
         engine.addSystem(renderSystem);
 
-        // create dickbutt in order to test systems
+        // create our Random with the current time as the seed
+        random = new Random(System.currentTimeMillis());
+
+        // create dickbutts in order to test systems
+        for (int i = 0; i < 10; i++) {
+            createDickbutt(random.nextInt(WORLD_WIDTH - 64), random.nextInt(WORLD_HEIGHT - 64), i);
+        }
+        renderSystem.addedToEngine(engine);
+    }
+
+    private void createDickbutt(int x, int y, int depth) {
         Entity dickbutt = engine.createEntity();
         TextureComponent textureComponent = new TextureComponent();
         SizeComponent sizeComponent = new SizeComponent();
         TransformComponent transformComponent = new TransformComponent();
-        VelocityComponent velocityComponent = new VelocityComponent();
 
+        // note that this is EXTREMELY inefficient and probably prone to memory leaks
+        // texture loading should be done separately and then fed into this system
         textureComponent.setTextureRegion(new TextureRegion(new Texture(Gdx.files.internal("dickbutt.png"))));
         sizeComponent.setWidth(64);
         sizeComponent.setHeight(64);
-        transformComponent.setPosition(new Vector3(WORLD_WIDTH / 2 - sizeComponent.getWidth() / 2,
-                                                   WORLD_HEIGHT / 2 - sizeComponent.getHeight() / 2, 0));
-        velocityComponent.setVelocity(new Vector3(0.0f, 5f, 0.0f));
-
+        transformComponent.setPosition(new Vector3(x, y, depth));
         dickbutt.add(textureComponent);
         dickbutt.add(sizeComponent);
         dickbutt.add(transformComponent);
-        dickbutt.add(velocityComponent);
 
         engine.addEntity(dickbutt);
-        renderSystem.addedToEngine(engine);
     }
 
     @Override
@@ -128,4 +138,7 @@ public class TacirGame extends ApplicationAdapter {
         return viewport;
     }
 
+    public Random getRandom() {
+        return random;
+    }
 }
