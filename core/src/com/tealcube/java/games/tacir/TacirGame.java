@@ -37,6 +37,8 @@ public class TacirGame extends ApplicationAdapter {
     public static final int WORLD_WIDTH = 800;
     public static final int WORLD_HEIGHT = 450;
 
+    private static TacirGame instance;
+
     // Entity/Component System engine, tracks all entities
     private PooledEngine engine;
 
@@ -53,6 +55,14 @@ public class TacirGame extends ApplicationAdapter {
 
     // EventManager
     private EventManager eventManager;
+
+    public TacirGame() {
+        instance = this;
+    }
+
+    public static TacirGame getInstance() {
+        return instance;
+    }
 
     @Override
     public void create() {
