@@ -53,6 +53,12 @@ public class TacirGame extends ApplicationAdapter {
     private OrthographicCamera camera;
     private Viewport viewport;
 
+    // Texture Assets
+    private Texture bigTexture;
+    private TextureRegion dickbutt;
+
+    // Audio Assets
+
     // Random
     private Random random;
 
@@ -69,6 +75,10 @@ public class TacirGame extends ApplicationAdapter {
 
     @Override
     public void create() {
+        // Load assets
+        bigTexture = new Texture(Gdx.files.internal("bigTexture.png"));
+        dickbutt = new TextureRegion(bigTexture, 0, 0, 64, 64);
+
         // initialize the ECS engine
         engine = new PooledEngine(ENTITY_POOL_INITIAL_SIZE, ENTITY_POOL_MAX_SIZE, COMPONENT_POOL_INITIAL_SIZE,
                                   COMPONENT_POOL_MAX_SIZE);
@@ -122,7 +132,7 @@ public class TacirGame extends ApplicationAdapter {
 
         // note that this is EXTREMELY inefficient and probably prone to memory leaks
         // texture loading should be done separately and then fed into this system
-        textureComponent.setTextureRegion(new TextureRegion(new Texture(Gdx.files.internal("dickbutt.png"))));
+        textureComponent.setTextureRegion(dickbutt);
         sizeComponent.setWidth(64);
         sizeComponent.setHeight(64);
         transformComponent.setPosition(new Vector3(x, y, depth));
