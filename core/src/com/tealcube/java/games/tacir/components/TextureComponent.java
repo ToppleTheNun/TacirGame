@@ -10,6 +10,7 @@ public class TextureComponent extends Component implements Poolable {
 
     @Override
     public void reset() {
+        // TODO: make a texture region that only disposes of the texture when it isn't being used
         if (hasTextureRegion()) {
             textureRegion.getTexture().dispose();
         }
