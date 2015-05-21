@@ -1,7 +1,6 @@
 package com.tealcube.java.games.tacir;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -113,13 +112,6 @@ public class TacirGame extends ApplicationAdapter {
     public void render() {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // rotate the dickbutt
-        Family family = Family.all(TransformComponent.class).get();
-        for (Entity e : engine.getEntitiesFor(family)) {
-            TransformComponent component = Mappers.getInstance().getTransformMapper().get(e);
-            component.setRotation(component.getRotation() + 0.1f);
-        }
 
         engine.update(Gdx.graphics.getDeltaTime());
     }
