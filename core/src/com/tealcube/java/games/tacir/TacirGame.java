@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tealcube.java.games.tacir.components.SizeComponent;
 import com.tealcube.java.games.tacir.components.TextureComponent;
@@ -33,8 +32,9 @@ public class TacirGame extends ApplicationAdapter {
     // have an ID that is NOT equal to 0
     public static final long INVALID_ENTITY_ID = 0L;
 
-    private static final int WORLD_WIDTH = 800;
-    private static final int WORLD_HEIGHT = 450;
+    // These should be visible to the launchers
+    public static final int WORLD_WIDTH = 800;
+    public static final int WORLD_HEIGHT = 450;
 
     // Entity/Component System engine, tracks all entities
     private PooledEngine engine;
