@@ -10,6 +10,9 @@ public class AndroidLauncher extends AndroidApplication {
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+        // setting these to false reduces our battery usage
+		config.useAccelerometer = false;
+        config.useCompass = false;
 		initialize(new TacirGame(), config);
 	}
 }
