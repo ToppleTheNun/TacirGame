@@ -151,6 +151,7 @@ public class TacirGame extends ApplicationAdapter {
         engine.removeSystem(renderSystem);
         renderSystem.dispose();
         engine.removeSystem(movementSystem);
+        textureAtlas.dispose();
     }
 
     public PooledEngine getEngine() {
