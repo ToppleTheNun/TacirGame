@@ -1,32 +1,28 @@
 package com.tealcube.java.games.tacir.components;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Pool.Poolable;
 
 public class TextureComponent extends Component implements Poolable {
 
-    private TextureRegion textureRegion = null;
+    private TextureAtlas.AtlasRegion texture = null;
 
     @Override
     public void reset() {
-        // TODO: make a texture region that only disposes of the texture when it isn't being used
-        if (hasTextureRegion()) {
-            textureRegion.getTexture().dispose();
-        }
-        textureRegion = null;
+        texture = null;
     }
 
-    public boolean hasTextureRegion() {
-        return textureRegion != null;
+    public boolean hasTexture() {
+        return texture != null;
     }
 
-    public TextureRegion getTextureRegion() {
-        return textureRegion;
+    public TextureAtlas.AtlasRegion getTexture() {
+        return texture;
     }
 
-    public void setTextureRegion(TextureRegion textureRegion) {
-        this.textureRegion = textureRegion;
+    public void setTexture(TextureAtlas.AtlasRegion texture) {
+        this.texture = texture;
     }
 
 }
