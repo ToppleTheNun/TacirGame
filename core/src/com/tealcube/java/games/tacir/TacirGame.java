@@ -6,8 +6,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -59,6 +58,9 @@ public class TacirGame extends ApplicationAdapter {
     // EventManager
     private EventManager eventManager;
 
+    // TextureAtlas
+    private TextureAtlas textureAtlas;
+
     public TacirGame() {
         instance = this;
     }
@@ -107,6 +109,8 @@ public class TacirGame extends ApplicationAdapter {
             Gdx.app.log("[DEBUG]", "Unable to register events");
         }
 
+        textureAtlas = new TextureAtlas(Gdx.files.internal("game.atlas"));
+
         // create dickbutts in order to test systems
         for (int i = 0; i < 10; i++) {
             createDickbutt(random.nextInt(WORLD_WIDTH - 64), random.nextInt(WORLD_HEIGHT - 64), i);
@@ -122,7 +126,7 @@ public class TacirGame extends ApplicationAdapter {
 
         // note that this is EXTREMELY inefficient and probably prone to memory leaks
         // texture loading should be done separately and then fed into this system
-        textureComponent.setTextureRegion(new TextureRegion(new Texture(Gdx.files.internal("dickbutt.png"))));
+        textureComponent.setTexture(textureAtlas.findRegion("dickbutt"));
         sizeComponent.setWidth(64);
         sizeComponent.setHeight(64);
         transformComponent.setPosition(new Vector3(x, y, depth));
