@@ -1,10 +1,7 @@
 package com.tealcube.java.games.tacir;
 
 import com.badlogic.ashley.core.ComponentMapper;
-import com.tealcube.java.games.tacir.components.SizeComponent;
-import com.tealcube.java.games.tacir.components.TextureComponent;
-import com.tealcube.java.games.tacir.components.TransformComponent;
-import com.tealcube.java.games.tacir.components.VelocityComponent;
+import com.tealcube.java.games.tacir.components.*;
 
 public final class Mappers {
 
@@ -26,6 +23,7 @@ public final class Mappers {
     private final ComponentMapper<VelocityComponent> velocityMapper;
     private final ComponentMapper<TextureComponent> textureMapper;
     private final ComponentMapper<SizeComponent> sizeMapper;
+    private final ComponentMapper<GravityComponent> gravityMapper;
 
     // create a private constructor so that only this class is able to
     // construct a copy of itself
@@ -34,6 +32,7 @@ public final class Mappers {
         velocityMapper = ComponentMapper.getFor(VelocityComponent.class);
         textureMapper = ComponentMapper.getFor(TextureComponent.class);
         sizeMapper = ComponentMapper.getFor(SizeComponent.class);
+        gravityMapper = ComponentMapper.getFor(GravityComponent.class);
     }
 
     public ComponentMapper<TransformComponent> getTransformMapper() {
@@ -50,5 +49,9 @@ public final class Mappers {
 
     public ComponentMapper<SizeComponent> getSizeMapper() {
         return sizeMapper;
+    }
+
+    public ComponentMapper<GravityComponent> getGravityMapper() {
+        return gravityMapper;
     }
 }
