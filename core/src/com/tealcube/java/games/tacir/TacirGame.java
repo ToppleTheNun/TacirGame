@@ -8,18 +8,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.tealcube.games.java.common.events.EventHandler;
 import com.tealcube.games.java.common.events.EventManager;
-import com.tealcube.games.java.common.events.Listener;
-import com.tealcube.java.games.tacir.components.*;
-import com.tealcube.java.games.tacir.events.EntityRenderEvent;
-import com.tealcube.java.games.tacir.systems.GravitySystem;
-import com.tealcube.java.games.tacir.systems.MovementSystem;
+import com.tealcube.java.games.tacir.components.SizeComponent;
+import com.tealcube.java.games.tacir.components.TextureComponent;
 import com.tealcube.java.games.tacir.systems.RenderSystem;
 
 import java.util.Random;
@@ -55,9 +50,7 @@ public class TacirGame extends ApplicationAdapter {
     private PooledEngine engine;
 
     // EntitySystems that want to be tracked
-    private MovementSystem movementSystem;
     private RenderSystem renderSystem;
-    private GravitySystem gravitySystem;
 
     // Camera and Viewport
     private OrthographicCamera camera;
@@ -105,32 +98,14 @@ public class TacirGame extends ApplicationAdapter {
         // create the Box2D world with no gravity (we want to control it ourselves)
         world = new World(Vector2.Zero, true);
 
-        // register the Movement system
-        movementSystem = new MovementSystem();
-        engine.addSystem(movementSystem);
         // register the Render system
         renderSystem = new RenderSystem(this, camera);
         engine.addSystem(renderSystem);
-        // register the Gravity system
-        gravitySystem = new GravitySystem();
-        engine.addSystem(gravitySystem);
 
         // create our Random with the current time as the seed
         random = new Random(System.currentTimeMillis());
 
         eventManager = new EventManager();
-        try {
-            eventManager.registerEvents(new Listener() {
-                @EventHandler
-                public void onEntityRender(EntityRenderEvent event) {
-                    TransformComponent transformComponent = Mappers.getInstance().getTransformMapper().get(
-                            event.getEntity());
-                    transformComponent.setRotation(transformComponent.getRotation() + 0.1f);
-                }
-            });
-        } catch (IllegalAccessException e) {
-            Gdx.app.log("[DEBUG]", "Unable to register events");
-        }
 
         textureAtlas = new TextureAtlas(Gdx.files.internal("game.atlas"));
 
@@ -145,24 +120,15 @@ public class TacirGame extends ApplicationAdapter {
         Entity dickbutt = engine.createEntity();
         TextureComponent textureComponent = new TextureComponent();
         SizeComponent sizeComponent = new SizeComponent();
-        TransformComponent transformComponent = new TransformComponent();
-        GravityComponent gravityComponent = new GravityComponent();
-        VelocityComponent velocityComponent = new VelocityComponent();
 
         // note that this is EXTREMELY inefficient and probably prone to memory leaks
         // texture loading should be done separately and then fed into this system
         textureComponent.setTexture(textureAtlas.findRegion("dickbutt"));
         sizeComponent.setWidth(64);
         sizeComponent.setHeight(64);
-        transformComponent.setPosition(new Vector3(x, y, depth));
-        gravityComponent.setGravity(new Vector3(0f, -0.05f, 0f));
-        velocityComponent.setVelocity(Vector3.Y);
 
         dickbutt.add(textureComponent);
         dickbutt.add(sizeComponent);
-        dickbutt.add(transformComponent);
-        dickbutt.add(gravityComponent);
-        dickbutt.add(velocityComponent);
 
         engine.addEntity(dickbutt);
     }
@@ -185,7 +151,6 @@ public class TacirGame extends ApplicationAdapter {
         engine.clearPools();
         engine.removeSystem(renderSystem);
         renderSystem.dispose();
-        engine.removeSystem(movementSystem);
         textureAtlas.dispose();
     }
 
