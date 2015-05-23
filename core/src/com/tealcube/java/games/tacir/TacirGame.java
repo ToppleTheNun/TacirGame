@@ -58,6 +58,9 @@ public class TacirGame extends ApplicationAdapter {
     // Random
     private Random random;
 
+    // Gamestate
+    public GameState gameState;
+
     // EventManager
     private EventManager eventManager;
 
