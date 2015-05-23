@@ -19,28 +19,16 @@ public final class Mappers {
 
     // ComponentMappers allow us to retrieve the components from entities MUCH faster than
     // using the entity's instance method for retrieving components
-    private final ComponentMapper<TransformComponent> transformMapper;
-    private final ComponentMapper<VelocityComponent> velocityMapper;
     private final ComponentMapper<TextureComponent> textureMapper;
     private final ComponentMapper<SizeComponent> sizeMapper;
-    private final ComponentMapper<GravityComponent> gravityMapper;
+    private final ComponentMapper<BodyComponent> bodyMapper;
 
     // create a private constructor so that only this class is able to
     // construct a copy of itself
     private Mappers() {
-        transformMapper = ComponentMapper.getFor(TransformComponent.class);
-        velocityMapper = ComponentMapper.getFor(VelocityComponent.class);
         textureMapper = ComponentMapper.getFor(TextureComponent.class);
         sizeMapper = ComponentMapper.getFor(SizeComponent.class);
-        gravityMapper = ComponentMapper.getFor(GravityComponent.class);
-    }
-
-    public ComponentMapper<TransformComponent> getTransformMapper() {
-        return transformMapper;
-    }
-
-    public ComponentMapper<VelocityComponent> getVelocityMapper() {
-        return velocityMapper;
+        bodyMapper = ComponentMapper.getFor(BodyComponent.class);
     }
 
     public ComponentMapper<TextureComponent> getTextureMapper() {
@@ -51,7 +39,7 @@ public final class Mappers {
         return sizeMapper;
     }
 
-    public ComponentMapper<GravityComponent> getGravityMapper() {
-        return gravityMapper;
+    public ComponentMapper<BodyComponent> getBodyMapper() {
+        return bodyMapper;
     }
 }
