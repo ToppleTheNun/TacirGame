@@ -1,9 +1,12 @@
 package com.tealcube.java.games.tacir;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.tealcube.java.games.tacir.entities.EntityManager;
+import com.tealcube.java.games.tacir.entities.EntityType;
 
 public class ClickHandler {
     TacirGame game;
@@ -31,6 +34,12 @@ public class ClickHandler {
     public void update() {
         if (Gdx.input.justTouched()) {
             guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+            Entity entity = EntityManager
+                .spawnEntity(TacirGame.getInstance(), EntityType.PLAYER, (int) touchPoint.x, (int) touchPoint.y);
+            TacirGame
+                .getInstance
+                ().getEngine().addEntity(
+                entity);
             switch (state) {
                 case RUNNING:
                     break;

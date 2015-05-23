@@ -61,7 +61,7 @@ public class TacirGame extends Game {
     private Random random;
 
     // Gamestate
-    public GameState gameState;
+    public GameState state;
 
     // EventManager
     private EventManager eventManager;
