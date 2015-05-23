@@ -15,10 +15,10 @@ public final class EntityManager {
 
     public static Entity spawnEntity(TacirGame tacirGame, EntityType entityType, int x, int y) {
         Entity entity = tacirGame.getEngine().createEntity();
-        BodyComponent bodyComponent = new BodyComponent();
-        TextureComponent textureComponent = new TextureComponent();
-        SizeComponent sizeComponent = new SizeComponent();
-        TransformComponent transformComponent = new TransformComponent();
+        BodyComponent bodyComponent = tacirGame.getEngine().createComponent(BodyComponent.class);
+        TextureComponent textureComponent = tacirGame.getEngine().createComponent(TextureComponent.class);
+        SizeComponent sizeComponent = tacirGame.getEngine().createComponent(SizeComponent.class);
+        TransformComponent transformComponent = tacirGame.getEngine().createComponent(TransformComponent.class);
 
         transformComponent.setPosition(new Vector2(x, y));
 
@@ -64,7 +64,7 @@ public final class EntityManager {
                 body.createFixture(fixtureDef);
                 body.setGravityScale(0f);
                 bodyComponent.setBody(body);
-                LifetimeComponent lifetimeComponent = new LifetimeComponent();
+                LifetimeComponent lifetimeComponent = tacirGame.getEngine().createComponent(LifetimeComponent.class);
                 lifetimeComponent.setLifetime(1);
                 entity.add(lifetimeComponent);
                 break;
@@ -100,4 +100,15 @@ public final class EntityManager {
         return entity;
     }
 
+    public static void removeEntity(TacirGame game, Entity entity) {
+        if (entity.getId() == TacirGame.INVALID_ENTITY_ID) {
+            return;
+        }
+        entity.remove(SizeComponent.class);
+        entity.remove(TextureComponent.class);
+        entity.remove(TransformComponent.class);
+        entity.remove(BodyComponent.class);
+        entity.remove(LifetimeComponent.class);
+        game.getEngine().removeEntity(entity);
+    }
 }
