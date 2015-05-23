@@ -7,10 +7,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tealcube.games.java.common.events.EventManager;
@@ -88,9 +86,9 @@ public class TacirGame extends ApplicationAdapter {
         camera.update();
 
         // register the Render system
-        renderSystem = new RenderSystem(this, camera);
-        engine.addSystem(renderSystem);
-        physicsSystem = new PhysicsSystem();
+//        renderSystem = new RenderSystem(this, camera);
+//        engine.addSystem(renderSystem);
+        physicsSystem = new PhysicsSystem(this);
         engine.addSystem(physicsSystem);
 
         // create our Random with the current time as the seed
@@ -101,10 +99,23 @@ public class TacirGame extends ApplicationAdapter {
         textureAtlas = new TextureAtlas(Gdx.files.internal("game.atlas"));
 
         // create dickbutts in order to test systems
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             createDickbutt(random.nextInt(WORLD_WIDTH - 64), random.nextInt(WORLD_HEIGHT - 64));
         }
-        renderSystem.addedToEngine(engine);
+        // create box to bounce on
+        createBox();
+        //renderSystem.addedToEngine(engine);
+    }
+
+    private void createBox() {
+        BodyDef groundBodyDef = new BodyDef();
+        groundBodyDef.position.set(new Vector2(0, 10));
+        Body groundBody = getPhysicsSystem().getWorld().createBody(groundBodyDef);
+
+        PolygonShape groundBox = new PolygonShape();
+        groundBox.setAsBox(getCamera().viewportWidth, 10.0f);
+        groundBody.createFixture(groundBox, 0.0f);
+        groundBox.dispose();
     }
 
     public RenderSystem getRenderSystem() {
@@ -127,7 +138,7 @@ public class TacirGame extends ApplicationAdapter {
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(x, y);
+        bodyDef.position.set(new Vector2(x, y));
         Body body = getPhysicsSystem().getWorld().createBody(bodyDef);
         CircleShape circle = new CircleShape();
         circle.setRadius(32);
@@ -164,7 +175,7 @@ public class TacirGame extends ApplicationAdapter {
     public void dispose() {
         engine.clearPools();
         engine.removeSystem(renderSystem);
-        renderSystem.dispose();
+//        renderSystem.dispose();
         textureAtlas.dispose();
     }
 

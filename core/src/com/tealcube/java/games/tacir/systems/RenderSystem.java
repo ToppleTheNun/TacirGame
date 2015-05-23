@@ -5,7 +5,6 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.tealcube.games.java.common.events.EventException;
 import com.tealcube.java.games.tacir.Mappers;
 import com.tealcube.java.games.tacir.TacirGame;
@@ -21,7 +20,6 @@ public class RenderSystem extends SortedEntitySystem {
     private final TacirGame game;
     private SpriteBatch batch;
     private OrthographicCamera camera;
-    private Box2DDebugRenderer debugRenderer;
 
     public RenderSystem(TacirGame game, OrthographicCamera camera) {
         super(Family.all(SizeComponent.class, TextureComponent.class, BodyComponent.class).get(),
@@ -34,7 +32,7 @@ public class RenderSystem extends SortedEntitySystem {
         this.game = game;
         this.batch = new SpriteBatch();
         this.camera = camera;
-        this.debugRenderer = new Box2DDebugRenderer();
+
     }
 
     @Override
@@ -48,7 +46,6 @@ public class RenderSystem extends SortedEntitySystem {
     @Override
     public void postUpdate(float deltaTime) {
         batch.end();
-        debugRenderer.render(game.getPhysicsSystem().getWorld(), camera.combined);
     }
 
     @Override
@@ -75,7 +72,7 @@ public class RenderSystem extends SortedEntitySystem {
         batch.draw(textureComponent.getTexture(), bodyComponent.getBody().getPosition().x,
                    bodyComponent.getBody().getPosition().y, sizeComponent.getWidth() * 0.5f,
                    sizeComponent.getHeight() * 0.5f, sizeComponent.getWidth(), sizeComponent.getHeight(),
-                   1f, 1f, bodyComponent.getBody().getAngle());
+                   1.0f, 1.0f, bodyComponent.getBody().getAngle());
     }
 
     @Override
