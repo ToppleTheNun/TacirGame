@@ -15,6 +15,7 @@ import com.tealcube.games.java.common.events.EventManager;
 import com.tealcube.java.games.tacir.components.BodyComponent;
 import com.tealcube.java.games.tacir.components.SizeComponent;
 import com.tealcube.java.games.tacir.components.TextureComponent;
+import com.tealcube.java.games.tacir.components.TransformComponent;
 import com.tealcube.java.games.tacir.systems.PhysicsSystem;
 import com.tealcube.java.games.tacir.systems.PositionSystem;
 import com.tealcube.java.games.tacir.systems.RenderSystem;
@@ -135,10 +136,12 @@ public class TacirGame extends ApplicationAdapter {
         BodyComponent bodyComponent = new BodyComponent();
         TextureComponent textureComponent = new TextureComponent();
         SizeComponent sizeComponent = new SizeComponent();
+        TransformComponent transformComponent = new TransformComponent();
 
         textureComponent.setTexture(textureAtlas.findRegion("dickbutt"));
         sizeComponent.setWidth(64);
         sizeComponent.setHeight(64);
+        transformComponent.setPosition(new Vector2(x, y));
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -158,6 +161,7 @@ public class TacirGame extends ApplicationAdapter {
         dickbutt.add(textureComponent);
         dickbutt.add(sizeComponent);
         dickbutt.add(bodyComponent);
+        dickbutt.add(transformComponent);
 
         engine.addEntity(dickbutt);
     }
