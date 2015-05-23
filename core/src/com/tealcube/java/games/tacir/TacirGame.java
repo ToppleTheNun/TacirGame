@@ -7,9 +7,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2D;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tealcube.games.java.common.events.EventManager;
@@ -36,12 +33,6 @@ public class TacirGame extends ApplicationAdapter {
     public static final int WORLD_WIDTH = 800;
     public static final int WORLD_HEIGHT = 450;
 
-    // Useful constants for Box2D physics
-    public static final float MAX_FRAME_TIME = 0.25f;
-    public static final float TIME_STEP = 1 / 45f;
-    public static final int VELOCITY_ITERATIONS = 6;
-    public static final int POSITION_ITERATIONS = 2;
-
     public static final int DESIRED_FPS = 60;
 
     private static TacirGame instance;
@@ -65,9 +56,6 @@ public class TacirGame extends ApplicationAdapter {
     // TextureAtlas
     private TextureAtlas textureAtlas;
 
-    // Box2D world
-    private World world;
-
     public TacirGame() {
         instance = this;
     }
@@ -78,9 +66,6 @@ public class TacirGame extends ApplicationAdapter {
 
     @Override
     public void create() {
-        // initialize Box2D
-        Box2D.init();
-
         // initialize the ECS engine
         engine = new PooledEngine(ENTITY_POOL_INITIAL_SIZE, ENTITY_POOL_MAX_SIZE, COMPONENT_POOL_INITIAL_SIZE,
                                   COMPONENT_POOL_MAX_SIZE);
@@ -94,9 +79,6 @@ public class TacirGame extends ApplicationAdapter {
         viewport.getCamera().update();
         viewport.update(WORLD_WIDTH, WORLD_HEIGHT);
         camera.update();
-
-        // create the Box2D world with no gravity (we want to control it ourselves)
-        world = new World(Vector2.Zero, true);
 
         // register the Render system
         renderSystem = new RenderSystem(this, camera);
@@ -172,9 +154,5 @@ public class TacirGame extends ApplicationAdapter {
 
     public EventManager getEventManager() {
         return eventManager;
-    }
-
-    public World getWorld() {
-        return world;
     }
 }
