@@ -7,7 +7,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tealcube.games.java.common.events.EventHandler;
@@ -61,6 +64,9 @@ public class TacirGame extends ApplicationAdapter {
     // TextureAtlas
     private TextureAtlas textureAtlas;
 
+    // Box2D world
+    private World world;
+
     public TacirGame() {
         instance = this;
     }
@@ -71,6 +77,9 @@ public class TacirGame extends ApplicationAdapter {
 
     @Override
     public void create() {
+        // initialize Box2D
+        Box2D.init();
+
         // initialize the ECS engine
         engine = new PooledEngine(ENTITY_POOL_INITIAL_SIZE, ENTITY_POOL_MAX_SIZE, COMPONENT_POOL_INITIAL_SIZE,
                                   COMPONENT_POOL_MAX_SIZE);
@@ -84,6 +93,9 @@ public class TacirGame extends ApplicationAdapter {
         viewport.getCamera().update();
         viewport.update(WORLD_WIDTH, WORLD_HEIGHT);
         camera.update();
+
+        // create the Box2D world with no gravity (we want to control it ourselves)
+        world = new World(Vector2.Zero, true);
 
         // register the Movement system
         movementSystem = new MovementSystem();
@@ -172,5 +184,9 @@ public class TacirGame extends ApplicationAdapter {
 
     public EventManager getEventManager() {
         return eventManager;
+    }
+
+    public World getWorld() {
+        return world;
     }
 }
