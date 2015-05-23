@@ -48,6 +48,10 @@ public class PhysicsSystem extends EntitySystem {
         debugRenderer.render(game.getPhysicsSystem().getWorld(), getGame().getCamera().combined);
     }
 
+    public void dispose() {
+        world.dispose();
+    }
+
     public World getWorld() {
         return world;
     }

@@ -2,27 +2,28 @@ package com.tealcube.java.games.tacir;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tealcube.games.java.common.events.EventManager;
-import com.tealcube.java.games.tacir.components.BodyComponent;
-import com.tealcube.java.games.tacir.components.SizeComponent;
-import com.tealcube.java.games.tacir.components.TextureComponent;
-import com.tealcube.java.games.tacir.components.TransformComponent;
+import com.tealcube.java.games.tacir.entities.EntityManager;
+import com.tealcube.java.games.tacir.entities.EntityType;
+import com.tealcube.java.games.tacir.systems.LifetimeSystem;
 import com.tealcube.java.games.tacir.systems.PhysicsSystem;
 import com.tealcube.java.games.tacir.systems.PositionSystem;
 import com.tealcube.java.games.tacir.systems.RenderSystem;
 
 import java.util.Random;
 
-public class TacirGame extends ApplicationAdapter {
+public class TacirGame extends Game {
 
     // The following four constants define the amount of entities
     // and components that we are able to have in our game
@@ -50,6 +51,7 @@ public class TacirGame extends ApplicationAdapter {
     private RenderSystem renderSystem;
     private PhysicsSystem physicsSystem;
     private PositionSystem positionSystem;
+    private LifetimeSystem lifetimeSystem;
 
     // Camera and Viewport
     private OrthographicCamera camera;
@@ -98,6 +100,8 @@ public class TacirGame extends ApplicationAdapter {
         engine.addSystem(physicsSystem);
         positionSystem = new PositionSystem();
         engine.addSystem(positionSystem);
+        lifetimeSystem = new LifetimeSystem(this);
+        engine.addSystem(lifetimeSystem);
 
         // create our Random with the current time as the seed
         random = new Random(System.currentTimeMillis());
@@ -134,37 +138,12 @@ public class TacirGame extends ApplicationAdapter {
         return physicsSystem;
     }
 
+    public TextureAtlas getTextureAtlas() {
+        return textureAtlas;
+    }
+
     private void createDickbutt(int x, int y) {
-        Entity dickbutt = engine.createEntity();
-        BodyComponent bodyComponent = new BodyComponent();
-        TextureComponent textureComponent = new TextureComponent();
-        SizeComponent sizeComponent = new SizeComponent();
-        TransformComponent transformComponent = new TransformComponent();
-
-        textureComponent.setTexture(textureAtlas.findRegion("dickbutt"));
-        sizeComponent.setWidth(64);
-        sizeComponent.setHeight(64);
-        transformComponent.setPosition(new Vector2(x, y));
-
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(new Vector2(x, y));
-        Body body = getPhysicsSystem().getWorld().createBody(bodyDef);
-        CircleShape circle = new CircleShape();
-        circle.setRadius(32);
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = circle;
-        fixtureDef.density = 0.1f;
-        fixtureDef.friction = 0.4f;
-        fixtureDef.restitution = 1.0f;
-        body.createFixture(fixtureDef);
-        bodyComponent.setBody(body);
-        circle.dispose();
-
-        dickbutt.add(textureComponent);
-        dickbutt.add(sizeComponent);
-        dickbutt.add(bodyComponent);
-        dickbutt.add(transformComponent);
+        Entity dickbutt = EntityManager.spawnEntity(this, EntityType.DICKBUTT, x, y);
 
         engine.addEntity(dickbutt);
     }
@@ -189,8 +168,12 @@ public class TacirGame extends ApplicationAdapter {
     @Override
     public void dispose() {
         engine.clearPools();
-        engine.removeSystem(renderSystem);
         renderSystem.dispose();
+        physicsSystem.dispose();
+        engine.removeSystem(renderSystem);
+        engine.removeSystem(lifetimeSystem);
+        engine.removeSystem(positionSystem);
+        engine.removeSystem(physicsSystem);
         textureAtlas.dispose();
     }
 
