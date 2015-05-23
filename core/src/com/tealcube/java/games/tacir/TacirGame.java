@@ -124,8 +124,6 @@ public class TacirGame extends ApplicationAdapter {
         SizeComponent sizeComponent = new SizeComponent();
         TransformComponent transformComponent = new TransformComponent();
 
-        // note that this is EXTREMELY inefficient and probably prone to memory leaks
-        // texture loading should be done separately and then fed into this system
         textureComponent.setTexture(textureAtlas.findRegion("dickbutt"));
         sizeComponent.setWidth(64);
         sizeComponent.setHeight(64);
@@ -137,12 +135,17 @@ public class TacirGame extends ApplicationAdapter {
         engine.addEntity(dickbutt);
     }
 
+    public void update (float deltaTime) {
+        if (deltaTime > 0.1f) deltaTime = 0.1f;
+        engine.update(deltaTime);
+    }
+
     @Override
     public void render() {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        engine.update(Gdx.graphics.getDeltaTime());
+        update(Gdx.graphics.getDeltaTime());
     }
 
     @Override
