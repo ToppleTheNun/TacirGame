@@ -7,11 +7,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tealcube.games.java.common.events.EventManager;
+import com.tealcube.java.games.tacir.components.BodyComponent;
 import com.tealcube.java.games.tacir.components.SizeComponent;
 import com.tealcube.java.games.tacir.components.TextureComponent;
+import com.tealcube.java.games.tacir.systems.PhysicsSystem;
 import com.tealcube.java.games.tacir.systems.RenderSystem;
 
 import java.util.Random;
@@ -42,6 +48,7 @@ public class TacirGame extends ApplicationAdapter {
 
     // EntitySystems that want to be tracked
     private RenderSystem renderSystem;
+    private PhysicsSystem physicsSystem;
 
     // Camera and Viewport
     private OrthographicCamera camera;
@@ -83,6 +90,8 @@ public class TacirGame extends ApplicationAdapter {
         // register the Render system
         renderSystem = new RenderSystem(this, camera);
         engine.addSystem(renderSystem);
+        physicsSystem = new PhysicsSystem();
+        engine.addSystem(physicsSystem);
 
         // create our Random with the current time as the seed
         random = new Random(System.currentTimeMillis());
@@ -93,24 +102,47 @@ public class TacirGame extends ApplicationAdapter {
 
         // create dickbutts in order to test systems
         for (int i = 0; i < 10; i++) {
-            createDickbutt(random.nextInt(WORLD_WIDTH - 64), random.nextInt(WORLD_HEIGHT - 64), i);
+            createDickbutt(random.nextInt(WORLD_WIDTH - 64), random.nextInt(WORLD_HEIGHT - 64));
         }
         renderSystem.addedToEngine(engine);
     }
 
-    private void createDickbutt(int x, int y, int depth) {
+    public RenderSystem getRenderSystem() {
+        return renderSystem;
+    }
+
+    public PhysicsSystem getPhysicsSystem() {
+        return physicsSystem;
+    }
+
+    private void createDickbutt(int x, int y) {
         Entity dickbutt = engine.createEntity();
+        BodyComponent bodyComponent = new BodyComponent();
         TextureComponent textureComponent = new TextureComponent();
         SizeComponent sizeComponent = new SizeComponent();
 
-        // note that this is EXTREMELY inefficient and probably prone to memory leaks
-        // texture loading should be done separately and then fed into this system
         textureComponent.setTexture(textureAtlas.findRegion("dickbutt"));
         sizeComponent.setWidth(64);
         sizeComponent.setHeight(64);
 
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(x, y);
+        Body body = getPhysicsSystem().getWorld().createBody(bodyDef);
+        CircleShape circle = new CircleShape();
+        circle.setRadius(32);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = circle;
+        fixtureDef.density = 0.1f;
+        fixtureDef.friction = 0.4f;
+        fixtureDef.restitution = 1.0f;
+        body.createFixture(fixtureDef);
+        bodyComponent.setBody(body);
+        circle.dispose();
+
         dickbutt.add(textureComponent);
         dickbutt.add(sizeComponent);
+        dickbutt.add(bodyComponent);
 
         engine.addEntity(dickbutt);
     }
