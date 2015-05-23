@@ -23,6 +23,7 @@ public final class Mappers {
     private final ComponentMapper<SizeComponent> sizeMapper;
     private final ComponentMapper<BodyComponent> bodyMapper;
     private final ComponentMapper<TransformComponent> transformMapper;
+    private final ComponentMapper<LifetimeComponent> lifetimeMapper;
 
     // create a private constructor so that only this class is able to
     // construct a copy of itself
@@ -31,6 +32,7 @@ public final class Mappers {
         sizeMapper = ComponentMapper.getFor(SizeComponent.class);
         bodyMapper = ComponentMapper.getFor(BodyComponent.class);
         transformMapper = ComponentMapper.getFor(TransformComponent.class);
+        lifetimeMapper = ComponentMapper.getFor(LifetimeComponent.class);
     }
 
     public ComponentMapper<TextureComponent> getTextureMapper() {
@@ -47,5 +49,9 @@ public final class Mappers {
 
     public ComponentMapper<TransformComponent> getTransformMapper() {
         return transformMapper;
+    }
+
+    public ComponentMapper<LifetimeComponent> getLifetimeMapper() {
+        return lifetimeMapper;
     }
 }
