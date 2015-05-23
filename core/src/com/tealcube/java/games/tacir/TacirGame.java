@@ -57,6 +57,8 @@ public class TacirGame extends Game {
     private OrthographicCamera camera;
     private Viewport viewport;
 
+    ClickHandler click = new ClickHandler();
+
     // Random
     private Random random;
 
@@ -110,6 +112,8 @@ public class TacirGame extends Game {
 
         textureAtlas = new TextureAtlas(Gdx.files.internal("game.atlas"));
 
+        state = GameState.RUNNING;
+
         // create dickbutts in order to test systems
         for (int i = 0; i < 5; i++) {
             createDickbutt(random.nextInt(WORLD_WIDTH - 64), random.nextInt(WORLD_HEIGHT - 64));
@@ -148,6 +152,16 @@ public class TacirGame extends Game {
         engine.addEntity(dickbutt);
     }
 
+    public void click() {
+        if (Gdx.input.justTouched()) {
+            switch (state) {
+                case RUNNING:
+                    click.gameplayClick();
+                    break;
+            }
+        }
+    }
+
     @Override
     public void render() {
         Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -158,6 +172,7 @@ public class TacirGame extends Game {
         int actualFPS = Gdx.graphics.getFramesPerSecond();
         actualFPS = (actualFPS == 0) ? 3000 : actualFPS;
         float time = ((float) DESIRED_FPS) / actualFPS;
+        click();
         engine.update(time);
     }
 
