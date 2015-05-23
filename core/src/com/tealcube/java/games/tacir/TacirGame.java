@@ -42,6 +42,14 @@ public class TacirGame extends ApplicationAdapter {
     public static final int WORLD_WIDTH = 800;
     public static final int WORLD_HEIGHT = 450;
 
+    // Useful constants for Box2D physics
+    public static final float MAX_FRAME_TIME = 0.25f;
+    public static final float TIME_STEP = 1 / 45f;
+    public static final int VELOCITY_ITERATIONS = 6;
+    public static final int POSITION_ITERATIONS = 2;
+
+    public static final int DESIRED_FPS = 60;
+
     private static TacirGame instance;
 
     // Entity/Component System engine, tracks all entities
@@ -154,7 +162,12 @@ public class TacirGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        engine.update(Gdx.graphics.getDeltaTime());
+        // creating our own definition of deltaTime so that our updates
+        // are not tied to libGDX's definition
+        int actualFPS = Gdx.graphics.getFramesPerSecond();
+        actualFPS = (actualFPS == 0) ? 3000 : actualFPS;
+        float time = ((float) DESIRED_FPS) / actualFPS;
+        engine.update(time);
     }
 
     @Override
