@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tealcube.games.java.common.events.EventException;
 import com.tealcube.java.games.tacir.Mappers;
 import com.tealcube.java.games.tacir.TacirGame;
-import com.tealcube.java.games.tacir.components.BodyComponent;
 import com.tealcube.java.games.tacir.components.SizeComponent;
 import com.tealcube.java.games.tacir.components.TextureComponent;
+import com.tealcube.java.games.tacir.components.TransformComponent;
 import com.tealcube.java.games.tacir.events.EntityRenderEvent;
 
 import java.util.Comparator;
@@ -22,7 +22,7 @@ public class RenderSystem extends SortedEntitySystem {
     private OrthographicCamera camera;
 
     public RenderSystem(TacirGame game, OrthographicCamera camera) {
-        super(Family.all(SizeComponent.class, TextureComponent.class, BodyComponent.class).get(),
+        super(Family.all(SizeComponent.class, TextureComponent.class, TransformComponent.class).get(),
               new Comparator<Entity>() {
                   @Override
                   public int compare(Entity o1, Entity o2) {
@@ -65,14 +65,14 @@ public class RenderSystem extends SortedEntitySystem {
             return;
         }
 
-        BodyComponent bodyComponent = Mappers.getInstance().getBodyMapper().get(e);
+        TransformComponent transformComponent = Mappers.getInstance().getTransformMapper().get(e);
         TextureComponent textureComponent = Mappers.getInstance().getTextureMapper().get(e);
         SizeComponent sizeComponent = Mappers.getInstance().getSizeMapper().get(e);
 
-        batch.draw(textureComponent.getTexture(), bodyComponent.getBody().getPosition().x,
-                   bodyComponent.getBody().getPosition().y, sizeComponent.getWidth() * 0.5f,
+        batch.draw(textureComponent.getTexture(), transformComponent.getPosition().x,
+                   transformComponent.getPosition().y, sizeComponent.getWidth() * 0.5f,
                    sizeComponent.getHeight() * 0.5f, sizeComponent.getWidth(), sizeComponent.getHeight(),
-                   1.0f, 1.0f, bodyComponent.getBody().getAngle());
+                   transformComponent.getScale().x, transformComponent.getScale().y, transformComponent.getRotation());
     }
 
     @Override
