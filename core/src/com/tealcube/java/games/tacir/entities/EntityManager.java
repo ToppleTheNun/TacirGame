@@ -3,6 +3,8 @@ package com.tealcube.java.games.tacir.entities;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
+import com.tealcube.java.games.tacir.Mappers;
 import com.tealcube.java.games.tacir.TacirGame;
 import com.tealcube.java.games.tacir.components.*;
 
@@ -107,6 +109,15 @@ public final class EntityManager {
         entity.remove(SizeComponent.class);
         entity.remove(TextureComponent.class);
         entity.remove(TransformComponent.class);
+        if (Mappers.getInstance().getBodyMapper().has(entity)) {
+            BodyComponent bodyComponent = Mappers.getInstance().getBodyMapper().get(entity);
+            if (bodyComponent.getBody() != null) {
+                Array<Fixture> fixtureArray = new Array<Fixture>(bodyComponent.getBody().getFixtureList());
+                for (Fixture fixture : fixtureArray) {
+                    bodyComponent.getBody().destroyFixture(fixture);
+                }
+            }
+        }
         entity.remove(BodyComponent.class);
         entity.remove(LifetimeComponent.class);
         game.getEngine().removeEntity(entity);
