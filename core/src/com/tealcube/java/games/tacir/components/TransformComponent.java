@@ -8,11 +8,13 @@ public class TransformComponent extends Component implements Poolable {
 
     private Vector2 position = Vector2.Zero;
     private Vector2 scale = new Vector2(1f, 1f);
+    private float rotation = 0f;
 
     @Override
     public void reset() {
         position = Vector2.Zero;
         scale = new Vector2(1f, 1f);
+        rotation = 0f;
     }
 
     public Vector2 getPosition() {
@@ -29,5 +31,13 @@ public class TransformComponent extends Component implements Poolable {
 
     public void setScale(Vector2 scale) {
         this.scale = scale;
+    }
+
+    public float getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
     }
 }
