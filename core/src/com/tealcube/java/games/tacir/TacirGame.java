@@ -16,6 +16,7 @@ import com.tealcube.java.games.tacir.components.BodyComponent;
 import com.tealcube.java.games.tacir.components.SizeComponent;
 import com.tealcube.java.games.tacir.components.TextureComponent;
 import com.tealcube.java.games.tacir.systems.PhysicsSystem;
+import com.tealcube.java.games.tacir.systems.PositionSystem;
 import com.tealcube.java.games.tacir.systems.RenderSystem;
 
 import java.util.Random;
@@ -47,6 +48,7 @@ public class TacirGame extends ApplicationAdapter {
     // EntitySystems that want to be tracked
     private RenderSystem renderSystem;
     private PhysicsSystem physicsSystem;
+    private PositionSystem positionSystem;
 
     // Camera and Viewport
     private OrthographicCamera camera;
@@ -86,10 +88,12 @@ public class TacirGame extends ApplicationAdapter {
         camera.update();
 
         // register the Render system
-//        renderSystem = new RenderSystem(this, camera);
-//        engine.addSystem(renderSystem);
+        renderSystem = new RenderSystem(this, camera);
+        engine.addSystem(renderSystem);
         physicsSystem = new PhysicsSystem(this);
         engine.addSystem(physicsSystem);
+        positionSystem = new PositionSystem();
+        engine.addSystem(positionSystem);
 
         // create our Random with the current time as the seed
         random = new Random(System.currentTimeMillis());
@@ -104,7 +108,7 @@ public class TacirGame extends ApplicationAdapter {
         }
         // create box to bounce on
         createBox();
-        //renderSystem.addedToEngine(engine);
+        renderSystem.addedToEngine(engine);
     }
 
     private void createBox() {
@@ -171,11 +175,15 @@ public class TacirGame extends ApplicationAdapter {
         engine.update(time);
     }
 
+    public PositionSystem getPositionSystem() {
+        return positionSystem;
+    }
+
     @Override
     public void dispose() {
         engine.clearPools();
         engine.removeSystem(renderSystem);
-//        renderSystem.dispose();
+        renderSystem.dispose();
         textureAtlas.dispose();
     }
 
