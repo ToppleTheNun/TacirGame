@@ -16,10 +16,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tealcube.games.java.common.events.EventHandler;
 import com.tealcube.games.java.common.events.EventManager;
 import com.tealcube.games.java.common.events.Listener;
-import com.tealcube.java.games.tacir.components.SizeComponent;
-import com.tealcube.java.games.tacir.components.TextureComponent;
-import com.tealcube.java.games.tacir.components.TransformComponent;
+import com.tealcube.java.games.tacir.components.*;
 import com.tealcube.java.games.tacir.events.EntityRenderEvent;
+import com.tealcube.java.games.tacir.systems.GravitySystem;
 import com.tealcube.java.games.tacir.systems.MovementSystem;
 import com.tealcube.java.games.tacir.systems.RenderSystem;
 
@@ -58,6 +57,7 @@ public class TacirGame extends ApplicationAdapter {
     // EntitySystems that want to be tracked
     private MovementSystem movementSystem;
     private RenderSystem renderSystem;
+    private GravitySystem gravitySystem;
 
     // Camera and Viewport
     private OrthographicCamera camera;
@@ -111,6 +111,9 @@ public class TacirGame extends ApplicationAdapter {
         // register the Render system
         renderSystem = new RenderSystem(this, camera);
         engine.addSystem(renderSystem);
+        // register the Gravity system
+        gravitySystem = new GravitySystem();
+        engine.addSystem(gravitySystem);
 
         // create our Random with the current time as the seed
         random = new Random(System.currentTimeMillis());
@@ -143,6 +146,8 @@ public class TacirGame extends ApplicationAdapter {
         TextureComponent textureComponent = new TextureComponent();
         SizeComponent sizeComponent = new SizeComponent();
         TransformComponent transformComponent = new TransformComponent();
+        GravityComponent gravityComponent = new GravityComponent();
+        VelocityComponent velocityComponent = new VelocityComponent();
 
         // note that this is EXTREMELY inefficient and probably prone to memory leaks
         // texture loading should be done separately and then fed into this system
@@ -150,9 +155,14 @@ public class TacirGame extends ApplicationAdapter {
         sizeComponent.setWidth(64);
         sizeComponent.setHeight(64);
         transformComponent.setPosition(new Vector3(x, y, depth));
+        gravityComponent.setGravity(new Vector3(0f, -0.05f, 0f));
+        velocityComponent.setVelocity(Vector3.Y);
+
         dickbutt.add(textureComponent);
         dickbutt.add(sizeComponent);
         dickbutt.add(transformComponent);
+        dickbutt.add(gravityComponent);
+        dickbutt.add(velocityComponent);
 
         engine.addEntity(dickbutt);
     }

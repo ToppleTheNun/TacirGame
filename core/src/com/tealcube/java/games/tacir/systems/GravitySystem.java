@@ -7,12 +7,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.tealcube.java.games.tacir.Mappers;
 import com.tealcube.java.games.tacir.TacirGame;
 import com.tealcube.java.games.tacir.components.GravityComponent;
-import com.tealcube.java.games.tacir.components.TransformComponent;
+import com.tealcube.java.games.tacir.components.VelocityComponent;
 
 public class GravitySystem extends IteratingSystem {
 
     public GravitySystem() {
-        super(Family.all(GravityComponent.class, TransformComponent.class).get());
+        super(Family.all(GravityComponent.class, VelocityComponent.class).get());
     }
 
     @Override
@@ -24,16 +24,16 @@ public class GravitySystem extends IteratingSystem {
 
         // below is faster than "entity.getComponent(TransformComponent.class)" or whatever
         // the entity equivalent is, but the source code is dumb
-        TransformComponent positionComponent = Mappers.getInstance().getTransformMapper().get(entity);
+        VelocityComponent velocityComponent = Mappers.getInstance().getVelocityMapper().get(entity);
         GravityComponent gravityComponent = Mappers.getInstance().getGravityMapper().get(entity);
 
         Vector3 gravity = gravityComponent.getGravity();
 
-        Vector3 oldPosition = positionComponent.getPosition();
-        Vector3 newPosition = new Vector3(oldPosition.x + gravity.x * deltaTime,
-                                          oldPosition.y + gravity.y * deltaTime,
-                                          oldPosition.z + gravity.z * deltaTime);
-        positionComponent.setPosition(newPosition);
+        Vector3 oldVelocity = velocityComponent.getVelocity();
+        Vector3 newVelocity = new Vector3(oldVelocity.x + gravity.x * deltaTime,
+                                          oldVelocity.y + gravity.y * deltaTime,
+                                          oldVelocity.z + gravity.z * deltaTime);
+        velocityComponent.setVelocity(newVelocity);
     }
 
 }
