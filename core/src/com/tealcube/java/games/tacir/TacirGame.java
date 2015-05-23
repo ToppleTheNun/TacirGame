@@ -2,7 +2,7 @@ package com.tealcube.java.games.tacir;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,7 +22,7 @@ import com.tealcube.java.games.tacir.systems.RenderSystem;
 
 import java.util.Random;
 
-public class TacirGame extends ApplicationAdapter {
+public class TacirGame extends Game {
 
     // The following four constants define the amount of entities
     // and components that we are able to have in our game
