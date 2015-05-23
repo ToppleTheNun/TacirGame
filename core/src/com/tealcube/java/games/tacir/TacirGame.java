@@ -165,11 +165,12 @@ public class TacirGame extends Game {
     @Override
     public void dispose() {
         engine.clearPools();
+        renderSystem.dispose();
+        physicsSystem.dispose();
         engine.removeSystem(renderSystem);
         engine.removeSystem(lifetimeSystem);
         engine.removeSystem(positionSystem);
         engine.removeSystem(physicsSystem);
-        renderSystem.dispose();
         textureAtlas.dispose();
     }
 
