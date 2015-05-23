@@ -1,10 +1,11 @@
-package com.tealcube.java.games.tacir;
+package com.tealcube.java.games.tacir.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.tealcube.java.games.tacir.TacirGame;
 
 public class GameScreen extends ScreenAdapter {
 
