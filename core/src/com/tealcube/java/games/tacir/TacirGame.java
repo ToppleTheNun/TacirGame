@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tealcube.games.java.common.events.EventManager;
 import com.tealcube.java.games.tacir.entities.EntityManager;
 import com.tealcube.java.games.tacir.entities.EntityType;
+import com.tealcube.java.games.tacir.systems.LifetimeSystem;
 import com.tealcube.java.games.tacir.systems.PhysicsSystem;
 import com.tealcube.java.games.tacir.systems.PositionSystem;
 import com.tealcube.java.games.tacir.systems.RenderSystem;
@@ -50,6 +51,7 @@ public class TacirGame extends Game {
     private RenderSystem renderSystem;
     private PhysicsSystem physicsSystem;
     private PositionSystem positionSystem;
+    private LifetimeSystem lifetimeSystem;
 
     // Camera and Viewport
     private OrthographicCamera camera;
@@ -95,6 +97,8 @@ public class TacirGame extends Game {
         engine.addSystem(physicsSystem);
         positionSystem = new PositionSystem();
         engine.addSystem(positionSystem);
+        lifetimeSystem = new LifetimeSystem(this);
+        engine.addSystem(lifetimeSystem);
 
         // create our Random with the current time as the seed
         random = new Random(System.currentTimeMillis());
@@ -162,6 +166,9 @@ public class TacirGame extends Game {
     public void dispose() {
         engine.clearPools();
         engine.removeSystem(renderSystem);
+        engine.removeSystem(lifetimeSystem);
+        engine.removeSystem(positionSystem);
+        engine.removeSystem(physicsSystem);
         renderSystem.dispose();
         textureAtlas.dispose();
     }
